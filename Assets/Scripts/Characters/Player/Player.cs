@@ -133,6 +133,17 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("Trigger triggered!");
+        ICollectable icollectable = collision.GetComponent<ICollectable>();
+        if (icollectable != null)
+        {
+            Debug.Log("ICollectable found!");
+            icollectable.Collect();
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
 
