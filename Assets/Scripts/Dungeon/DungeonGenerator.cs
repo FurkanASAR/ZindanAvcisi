@@ -6,6 +6,10 @@ using UnityEngine.Tilemaps;
 
 public class DungeonGenerator : MonoBehaviour
 {
+    public event EventHandler OnBrokenDoorGenerated;
+
+    [SerializeField] private GameObject brokenDoor;
+    [SerializeField] private GameObject dungeonDoor;
     [SerializeField] private Tile floorTile;
     [SerializeField] private Tile wallTile;
     [SerializeField] private Tilemap floorTileMap;
@@ -26,6 +30,16 @@ public class DungeonGenerator : MonoBehaviour
 
     private List<Agent> agentList;
     private List<Vector3Int> floorTileList;
+    private List<Vector3Int> wallTileList;
+    private Vector3 playerWorldPosition;
+
+    public Vector3 PlayerWorldPosition
+    {
+        get
+        {
+            return playerWorldPosition;
+        }
+    }
     private void Start()
     {
         Initializer();
@@ -34,6 +48,7 @@ public class DungeonGenerator : MonoBehaviour
     {
         agentList = new List<Agent>();
         floorTileList = new List<Vector3Int>();
+        wallTileList = new List<Vector3Int>();
 
         mapGrid = new MapGrid[(int)mapSize.x, (int)mapSize.y];
 
@@ -130,8 +145,8 @@ public class DungeonGenerator : MonoBehaviour
             foreach (Agent currentAgent in agentList)
             {
             currentAgent.position += currentAgent.direction;
-            currentAgent.position.x = Mathf.Clamp(currentAgent.position.x, 1, mapGrid.GetLength(0) - 2);
-            currentAgent.position.y = Mathf.Clamp(currentAgent.position.y, 1, mapGrid.GetLength(1) - 2);
+            currentAgent.position.x = Mathf.Clamp(currentAgent.position.x, 1, mapGrid.GetLength(0) - 3);
+            currentAgent.position.y = Mathf.Clamp(currentAgent.position.y, 1, mapGrid.GetLength(1) - 3);
             }
         }
 
@@ -161,22 +176,88 @@ public class DungeonGenerator : MonoBehaviour
             {
                 Vector3Int wallTileVector = new Vector3Int(currentFloor.x + 1, currentFloor.y, 0);
                 wallTileMap.SetTile(wallTileVector, wallTile);
+                wallTileList.Add(wallTileVector);
             }
             if (mapGrid[currentFloor.x, currentFloor.y + 1] == MapGrid.Empty)
             {
                 Vector3Int wallTileVector = new Vector3Int(currentFloor.x, currentFloor.y + 1, 0);
                 wallTileMap.SetTile(wallTileVector, wallTile);
+                wallTileList.Add(wallTileVector);   
             }
             if (mapGrid[currentFloor.x - 1, currentFloor.y] == MapGrid.Empty)
             {
                 Vector3Int wallTileVector = new Vector3Int(currentFloor.x - 1, currentFloor.y, 0);
                 wallTileMap.SetTile(wallTileVector, wallTile);
+                wallTileList.Add(wallTileVector);
             }
             if (mapGrid[currentFloor.x, currentFloor.y - 1] == MapGrid.Empty)
             {
                 Vector3Int wallTileVector = new Vector3Int(currentFloor.x, currentFloor.y - 1, 0);
                 wallTileMap.SetTile(wallTileVector, wallTile);
+                wallTileList.Add(wallTileVector);
             }
         }
+        CreateDungeonDoors();
     }
+
+
+    //Gets the wall vecttors and turns one into a broken door. Removes door's vector from the list/
+    private void CreateDungeonDoors()
+    {
+        Vector3Int brokenDoorPosition = GetRandomInList(wallTileList);
+        Vector3 brokenDoorWorldPosition = wallTileMap.CellToWorld(brokenDoorPosition) + wallTileMap.cellSize / 2;
+        Instantiate(brokenDoor, brokenDoorWorldPosition, Quaternion.identity);
+
+        Vector3Int dungeonDoorPosition = GetRandomInList(wallTileList);
+        Vector3 dungeonDoorWorldPosition = wallTileMap.CellToWorld(dungeonDoorPosition) + wallTileMap.cellSize / 2;
+        Instantiate(dungeonDoor, dungeonDoorWorldPosition, Quaternion.identity);
+
+        wallTileList.Remove(brokenDoorPosition);
+
+        SetPlayerSpawn(Vector3Int.FloorToInt(brokenDoorWorldPosition));
+    }
+
+    private void SetPlayerSpawn(Vector3Int brokenDoorWorldPosition)
+    {
+        if (mapGrid[brokenDoorWorldPosition.x + 1, brokenDoorWorldPosition.y] == MapGrid.Floor)
+        {         
+            Vector3Int pos = new Vector3Int(brokenDoorWorldPosition.x + 1, brokenDoorWorldPosition.y);            
+            this.playerWorldPosition = wallTileMap.CellToWorld(pos) + wallTileMap.cellSize / 2;
+
+        }
+        else if (mapGrid[brokenDoorWorldPosition.x -1, brokenDoorWorldPosition.y] == MapGrid.Floor)
+        {           
+            Vector3Int pos = new Vector3Int(brokenDoorWorldPosition.x - 1, brokenDoorWorldPosition.y);
+            this.playerWorldPosition = wallTileMap.CellToWorld(pos) + wallTileMap.cellSize / 2;
+
+        }
+        else if (mapGrid[brokenDoorWorldPosition.x, brokenDoorWorldPosition.y +1] == MapGrid.Floor)
+        {
+            Vector3Int pos = new Vector3Int(brokenDoorWorldPosition.x, brokenDoorWorldPosition.y + 1);
+            this.playerWorldPosition = wallTileMap.CellToWorld(pos) + wallTileMap.cellSize / 2;
+
+        }
+        else if (mapGrid[brokenDoorWorldPosition.x, brokenDoorWorldPosition.y -1] == MapGrid.Floor)
+        {
+            Vector3Int pos = new Vector3Int(brokenDoorWorldPosition.x, brokenDoorWorldPosition.y - 1);
+            this.playerWorldPosition = wallTileMap.CellToWorld(pos) + wallTileMap.cellSize / 2;
+        }
+        else
+        {
+            Debug.Log("Else executed!");
+        }
+        OnBrokenDoorGenerated?.Invoke(this, EventArgs.Empty);
+    }
+
+    private T GetRandomInList<T>(List<T> list)
+    {
+        if (list == null || list.Count == 0)
+        {
+            Debug.LogError("List is empty or not initialized!");
+        }
+
+        int index = UnityEngine.Random.Range(0, list.Count);
+        return list[index];
+    }
+
 }

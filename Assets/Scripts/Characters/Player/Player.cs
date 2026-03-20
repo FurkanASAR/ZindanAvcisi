@@ -38,7 +38,10 @@ public class Player : MonoBehaviour
     {
         //HandleInput gelen input'a gore state degisir
         HandleInput();
+    }
 
+    private void FixedUpdate()
+    {
         //HandleState state'e gore eylem degisir
         HandleState();
     }
@@ -58,8 +61,6 @@ public class Player : MonoBehaviour
         Vector3 moveDirection = new Vector3(inputVector.x, inputVector.y, 0f);
         transform.position += moveDirection * Time.deltaTime * moveSpeed;
     }
-
-
     private void HandleAttackEvent()
     {   if (isAttacking)
         {
@@ -81,7 +82,6 @@ public class Player : MonoBehaviour
         }
         StartCoroutine(AttackDelay());
     }
-
     private IEnumerator AttackDelay()
     {
         yield return new WaitForSeconds(attackTimer);
@@ -90,7 +90,6 @@ public class Player : MonoBehaviour
         isAttacking = false;
         playerState = PlayerState.Idle;
     }
-
     private void HandleInput()
     {
         if(playerState == PlayerState.Attacking)
@@ -107,7 +106,6 @@ public class Player : MonoBehaviour
             playerState = PlayerState.Idle;
         }
     }
-
     private void HandleState()
     {
         switch (playerState)
@@ -135,11 +133,9 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Trigger triggered!");
         ICollectable icollectable = collision.GetComponent<ICollectable>();
         if (icollectable != null)
         {
-            Debug.Log("ICollectable found!");
             icollectable.Collect();
         }
     }
