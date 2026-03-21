@@ -26,11 +26,6 @@ public class DungeonManager : MonoBehaviour
     {
 
         brokenDoorPosition = dungeonGenerator.PlayerWorldPosition;
-
-        Debug.Log("DungeonManager broken door position" +  brokenDoorPosition);
-
         player.transform.position = brokenDoorPosition;
-
-        Debug.Log("Dungeon manager player position" +  player.transform.position);
     }
 }

@@ -6,33 +6,12 @@ using UnityEngine.Tilemaps;
 
 public class DungeonGenerator : MonoBehaviour
 {
-    public event EventHandler OnBrokenDoorGenerated;
-
-    [SerializeField] private GameObject brokenDoor;
-    [SerializeField] private GameObject dungeonDoor;
-    [SerializeField] private Tile floorTile;
-    [SerializeField] private Tile wallTile;
-    [SerializeField] private Tilemap floorTileMap;
-    [SerializeField] private Tilemap wallTileMap;
-    [SerializeField] private Vector2 mapSize;
-    [SerializeField] private int maxAgent;
-    [SerializeField] private int minAgnet;
-    [SerializeField] private float gridFillPercentage;
-
     public enum MapGrid
     {
         Empty,
         Floor,
         Wall
     }
-    private MapGrid[,] mapGrid;
-    private int floorTileCount;
-
-    private List<Agent> agentList;
-    private List<Vector3Int> floorTileList;
-    private List<Vector3Int> wallTileList;
-    private Vector3 playerWorldPosition;
-
     public Vector3 PlayerWorldPosition
     {
         get
@@ -40,6 +19,32 @@ public class DungeonGenerator : MonoBehaviour
             return playerWorldPosition;
         }
     }
+    public event EventHandler OnBrokenDoorGenerated;
+
+    [SerializeField] private GameObject brokenDoor;
+    [SerializeField] private GameObject dungeonDoor;
+    [SerializeField] private GameObject enemy;
+    [SerializeField] private GameObject goldOre;
+    [SerializeField] private Tile floorTile;
+    [SerializeField] private Tile wallTile;
+    [SerializeField] private Tilemap floorTileMap;
+    [SerializeField] private Tilemap wallTileMap;
+    [SerializeField] private Vector2Int mapSize;
+    [SerializeField] private int maxAgent;
+    [SerializeField] private int minAgnet;
+    [SerializeField] private float gridFillPercentage;
+    [SerializeField] private int maxEnemyCount;
+    [SerializeField] private int maxOreCount;
+
+    private MapGrid[,] mapGrid;
+    private int floorTileCount;
+    private List<Agent> agentList;
+    private List<Vector3Int> floorTileList;
+    private List<Vector3Int> wallTileList;
+    private Vector3 playerWorldPosition;
+    private int enemyCount = 0;
+    private int oreCount = 0;
+
     private void Start()
     {
         Initializer();
@@ -199,65 +204,77 @@ public class DungeonGenerator : MonoBehaviour
         }
         CreateDungeonDoors();
     }
-
-
-    //Gets the wall vecttors and turns one into a broken door. Removes door's vector from the list/
     private void CreateDungeonDoors()
     {
-        Vector3Int brokenDoorPosition = GetRandomInList(wallTileList);
-        Vector3 brokenDoorWorldPosition = wallTileMap.CellToWorld(brokenDoorPosition) + wallTileMap.cellSize / 2;
-        Instantiate(brokenDoor, brokenDoorWorldPosition, Quaternion.identity);
+        Vector3Int brokenDoorPosition = Utils.GetAndRemoveRandomInList(wallTileList);
+        Vector3Int dungeonDoorPosition = Utils.GetAndRemoveRandomInList(wallTileList);
 
-        Vector3Int dungeonDoorPosition = GetRandomInList(wallTileList);
-        Vector3 dungeonDoorWorldPosition = wallTileMap.CellToWorld(dungeonDoorPosition) + wallTileMap.cellSize / 2;
+        Vector3 brokenDoorWorldPosition = GetWorldPosition(brokenDoorPosition);
+        Vector3 dungeonDoorWorldPosition = GetWorldPosition(dungeonDoorPosition);
+
+        Instantiate(brokenDoor, brokenDoorWorldPosition, Quaternion.identity);
         Instantiate(dungeonDoor, dungeonDoorWorldPosition, Quaternion.identity);
 
-        wallTileList.Remove(brokenDoorPosition);
-
         SetPlayerSpawn(Vector3Int.FloorToInt(brokenDoorWorldPosition));
+        CreateEnemies();
+        CreateOres();
     }
-
     private void SetPlayerSpawn(Vector3Int brokenDoorWorldPosition)
     {
         if (mapGrid[brokenDoorWorldPosition.x + 1, brokenDoorWorldPosition.y] == MapGrid.Floor)
         {         
             Vector3Int pos = new Vector3Int(brokenDoorWorldPosition.x + 1, brokenDoorWorldPosition.y);            
-            this.playerWorldPosition = wallTileMap.CellToWorld(pos) + wallTileMap.cellSize / 2;
-
+            this.playerWorldPosition = GetWorldPosition(pos);
         }
         else if (mapGrid[brokenDoorWorldPosition.x -1, brokenDoorWorldPosition.y] == MapGrid.Floor)
         {           
             Vector3Int pos = new Vector3Int(brokenDoorWorldPosition.x - 1, brokenDoorWorldPosition.y);
-            this.playerWorldPosition = wallTileMap.CellToWorld(pos) + wallTileMap.cellSize / 2;
+            this.playerWorldPosition = GetWorldPosition(pos);
 
         }
         else if (mapGrid[brokenDoorWorldPosition.x, brokenDoorWorldPosition.y +1] == MapGrid.Floor)
         {
             Vector3Int pos = new Vector3Int(brokenDoorWorldPosition.x, brokenDoorWorldPosition.y + 1);
-            this.playerWorldPosition = wallTileMap.CellToWorld(pos) + wallTileMap.cellSize / 2;
+            this.playerWorldPosition = GetWorldPosition(pos);
 
         }
         else if (mapGrid[brokenDoorWorldPosition.x, brokenDoorWorldPosition.y -1] == MapGrid.Floor)
         {
             Vector3Int pos = new Vector3Int(brokenDoorWorldPosition.x, brokenDoorWorldPosition.y - 1);
-            this.playerWorldPosition = wallTileMap.CellToWorld(pos) + wallTileMap.cellSize / 2;
+            this.playerWorldPosition = GetWorldPosition(pos);
         }
         else
         {
-            Debug.Log("Else executed!");
+            Debug.Log("Dungeon Generator PlayeSpawn: Else executed!");
         }
         OnBrokenDoorGenerated?.Invoke(this, EventArgs.Empty);
     }
-
-    private T GetRandomInList<T>(List<T> list)
+    private void CreateEnemies()
     {
-        if (list == null || list.Count == 0)
+        while (enemyCount < maxEnemyCount)
         {
-            Debug.LogError("List is empty or not initialized!");
+            CreateObject(enemy);
+            enemyCount++;
         }
-
-        int index = UnityEngine.Random.Range(0, list.Count);
-        return list[index];
+    }
+    private void CreateOres()
+    {
+        while (oreCount < maxOreCount)
+        {
+            CreateObject(goldOre);
+            oreCount++;
+        }
     }
 
+    private void CreateObject(GameObject gameObject)
+    {
+        Vector3Int objectPosition = Utils.GetAndRemoveRandomInList(floorTileList);
+        Vector3 objectWorldPosition = GetWorldPosition(objectPosition);
+
+        Instantiate(gameObject, objectWorldPosition, Quaternion.identity);
+    }
+    private Vector3 GetWorldPosition(Vector3Int position)
+    {
+        return Vector3Int.FloorToInt(position) + wallTileMap.cellSize / 2;
+    }
 }

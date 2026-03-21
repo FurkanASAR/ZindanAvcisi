@@ -498,6 +498,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MapGenerator
   brokenDoor: {fileID: 2661192771400120223, guid: c4fd5710ec01a3646b8f629efc80f632, type: 3}
   dungeonDoor: {fileID: 854051549447422443, guid: fb1701bd05617d64690759d7490d342c, type: 3}
+  enemy: {fileID: 6394926080208838952, guid: fb5315e1980dc0d4d8a47f678ba181cc, type: 3}
+  goldOre: {fileID: 820512738362599449, guid: 39f19363c959032479c88a334f36b2a9, type: 3}
   floorTile: {fileID: 11400000, guid: 54d2eeaeda1a5bf4eae77e0fbb499baf, type: 2}
   wallTile: {fileID: 11400000, guid: fd03ddf92c214cb46844521e45756e20, type: 2}
   floorTileMap: {fileID: 2045135387}
@@ -506,6 +508,8 @@ MonoBehaviour:
   maxAgent: 10
   minAgnet: 1
   gridFillPercentage: 0.2
+  maxEnemyCount: 20
+  maxOreCount: 25
 --- !u!1 &2045135384
 GameObject:
   m_ObjectHideFlags: 0
