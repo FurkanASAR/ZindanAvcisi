@@ -13,9 +13,9 @@ TagManager:
   - UI
   - Player
   - Door
-  - 
-  - 
-  - 
+  - Walkable
+  - Unwalkable
+  - Collectable
   - 
   - 
   - 
@@ -43,6 +43,9 @@ TagManager:
     locked: 0
   - name: Door
     uniqueID: 1965208375
+    locked: 0
+  - name: Collectable
+    uniqueID: 2704784465
     locked: 0
   - name: Player
     uniqueID: 1532588289
