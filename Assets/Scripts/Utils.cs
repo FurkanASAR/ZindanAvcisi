@@ -18,7 +18,6 @@ public static class Utils
 
         return list[listIndex];
     }
-
     public static T GetAndRemoveRandomInList<T>(List<T> list)
     {
         if (list == null || list.Count == 0)

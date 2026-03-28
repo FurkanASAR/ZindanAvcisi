@@ -265,7 +265,6 @@ public class DungeonGenerator : MonoBehaviour
             oreCount++;
         }
     }
-
     private void CreateObject(GameObject gameObject)
     {
         Vector3Int objectPosition = Utils.GetAndRemoveRandomInList(floorTileList);

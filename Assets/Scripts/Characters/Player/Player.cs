@@ -2,34 +2,47 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable, IHasHealth
 {
+    public event Action OnHealthChange;
+    public HealthSystem CharacterHealth => playerHealth;
+    public Faction Faction => faction;
+
     [SerializeField] private float moveSpeed = 7;
     [SerializeField] private float attackRate;
     [SerializeField] Transform attackPoint;
     [SerializeField] float attackPointRadius = 0.5f;
+    [SerializeField] PlayerState playerState;
 
+    private HealthSystem playerHealth;
+    private float playerMaxHealth = 100f;
     private Vector2 inputVector = new Vector2();
     private float attackTimer;
     private bool isAttacking = false;
+    private float damage = 10f;
+    private Faction faction = Faction.Player;
     private enum PlayerState
     {
         Idle,
         Moving,
         Attacking
     }
-    [SerializeField] PlayerState playerState;
 
     private void Awake()
     {
         playerState = PlayerState.Idle;
         attackTimer = attackRate;
+        playerHealth = new HealthSystem(playerMaxHealth);
+        Debug.Log(playerHealth.GetHealth());
     }
-    private void OnEnable()
+    private void Start()
     {
         InputManager.Instance.OnAttackButtonPressed += HandleAttackEvent;
     }
+    private void OnEnable()
+    {
 
+    }
     private void OnDisable()
     {
         InputManager.Instance.OnAttackButtonPressed -= HandleAttackEvent;
@@ -39,7 +52,6 @@ public class Player : MonoBehaviour
         //HandleInput gelen input'a gore state degisir
         HandleInput();
     }
-
     private void FixedUpdate()
     {
         //HandleState state'e gore eylem degisir
@@ -73,20 +85,21 @@ public class Player : MonoBehaviour
     }
     private void Attack()
     {
-        Debug.Log("Player Attack!");
         isAttacking = true;
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackPointRadius);
         foreach(Collider2D enemy in hitEnemies)
         {
-            Debug.Log("We hit enemy");
+            IDamageable damageable = enemy.GetComponent<IDamageable>();
+            if(damageable != null && damageable.Faction == Faction.Enemy)
+            {
+                damageable.TakeDamage(damage);
+            }
         }
         StartCoroutine(AttackDelay());
     }
     private IEnumerator AttackDelay()
     {
         yield return new WaitForSeconds(attackTimer);
-
-        Debug.Log("Attack Timer Ended!");
         isAttacking = false;
         playerState = PlayerState.Idle;
     }
@@ -131,6 +144,19 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void TakeDamage(float damage)
+    {
+        playerHealth.TakeDamage(damage);
+        OnHealthChange?.Invoke();
+        Debug.Log(playerHealth.GetHealth());
+    }
+
+    public void Heal(float heal)
+    {
+        playerHealth.Heal(heal);
+        OnHealthChange?.Invoke();
+        Debug.Log(playerHealth.GetHealth());
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         ICollectable icollectable = collision.GetComponent<ICollectable>();
@@ -139,10 +165,8 @@ public class Player : MonoBehaviour
             icollectable.Collect();
         }
     }
-
     private void OnDrawGizmosSelected()
     {
-
         Gizmos.DrawSphere(attackPoint.position, attackPointRadius);
     }
 }

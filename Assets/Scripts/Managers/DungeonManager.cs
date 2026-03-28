@@ -14,7 +14,6 @@ public class DungeonManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
 
         dungeonGenerator.OnBrokenDoorGenerated += DungeonGenerator_OnBrokenDoorGenerated;
-
     }
 
     private void OnDisable()
@@ -24,7 +23,6 @@ public class DungeonManager : MonoBehaviour
 
     private void DungeonGenerator_OnBrokenDoorGenerated(object sender, System.EventArgs e)
     {
-
         brokenDoorPosition = dungeonGenerator.PlayerWorldPosition;
         player.transform.position = brokenDoorPosition;
     }
