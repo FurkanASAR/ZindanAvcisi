@@ -175,6 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1026244561}
   - component: {fileID: 1026244560}
+  - component: {fileID: 1026244562}
   m_Layer: 0
   m_Name: DungeonManager
   m_TagString: Untagged
@@ -210,6 +211,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1026244562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026244559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83a9121ae6a671945b98114fc703cda0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AStarManager
+  dungeonGenerator: {fileID: 1595220054}
 --- !u!1 &1356568938
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,7 +512,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MapGenerator
   brokenDoor: {fileID: 2661192771400120223, guid: c4fd5710ec01a3646b8f629efc80f632, type: 3}
   dungeonDoor: {fileID: 854051549447422443, guid: fb1701bd05617d64690759d7490d342c, type: 3}
-  enemy: {fileID: 6394926080208838952, guid: fb5315e1980dc0d4d8a47f678ba181cc, type: 3}
+  enemy: {fileID: 4657752523550977138, guid: fb5315e1980dc0d4d8a47f678ba181cc, type: 3}
   goldOre: {fileID: 820512738362599449, guid: 39f19363c959032479c88a334f36b2a9, type: 3}
   floorTile: {fileID: 11400000, guid: 54d2eeaeda1a5bf4eae77e0fbb499baf, type: 2}
   wallTile: {fileID: 11400000, guid: fd03ddf92c214cb46844521e45756e20, type: 2}

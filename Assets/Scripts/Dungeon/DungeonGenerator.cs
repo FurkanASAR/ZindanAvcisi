@@ -1,3 +1,5 @@
+using NUnit;
+using NUnit.Framework.Interfaces;
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,6 +8,8 @@ using UnityEngine.Tilemaps;
 
 public class DungeonGenerator : MonoBehaviour
 {
+
+    public NPC_Controller npc;
     public enum MapGrid
     {
         Empty,
@@ -20,10 +24,11 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
     public event EventHandler OnBrokenDoorGenerated;
+    public List<Node> nodesList { get; private set; }
 
     [SerializeField] private GameObject brokenDoor;
     [SerializeField] private GameObject dungeonDoor;
-    [SerializeField] private GameObject enemy;
+    [SerializeField] private Enemy enemy;
     [SerializeField] private GameObject goldOre;
     [SerializeField] private Tile floorTile;
     [SerializeField] private Tile wallTile;
@@ -45,15 +50,19 @@ public class DungeonGenerator : MonoBehaviour
     private int enemyCount = 0;
     private int oreCount = 0;
 
+    private void Awake()
+    {
+        agentList = new List<Agent>();
+        floorTileList = new List<Vector3Int>();
+        wallTileList = new List<Vector3Int>();
+        nodesList = new List<Node>();
+    }
     private void Start()
     {
         Initializer();
     }
     private void Initializer()
     {
-        agentList = new List<Agent>();
-        floorTileList = new List<Vector3Int>();
-        wallTileList = new List<Vector3Int>();
 
         mapGrid = new MapGrid[(int)mapSize.x, (int)mapSize.y];
 
@@ -82,6 +91,7 @@ public class DungeonGenerator : MonoBehaviour
                     floorTileCount++;
                     mapGrid[currentPosition.x, currentPosition.y] = MapGrid.Floor;
                     floorTileList.Add(currentPosition);
+                    //nodesList.Add(new Node { })
                 }
             }
         }
@@ -202,7 +212,45 @@ public class DungeonGenerator : MonoBehaviour
                 wallTileList.Add(wallTileVector);
             }
         }
+        CreateNodes();
         CreateDungeonDoors();
+    }
+
+    private void CreateNodes()
+    {
+        int i = 0;
+        foreach (Vector3Int nodePosition in floorTileList)
+        {
+            i++;
+            Vector3 nodeWorldPosition = GetWorldPosition(nodePosition);
+
+            Node node = new Node{ gridX = nodeWorldPosition.x, gridY = nodeWorldPosition.y };
+            nodesList.Add(node);
+            Debug.Log(i +". node position: X " + node.gridX + " Y: " + node.gridY);
+        }
+        CreateConnections();
+    }
+    private void CreateConnections()
+    {
+        for (int i = 0; i < nodesList.Count; i++)
+        {
+            for (int j = i + 1; j < nodesList.Count; j++)
+            {
+                Vector2 iVector = new Vector2(nodesList[i].gridX, nodesList[i].gridY);
+                Vector2 jVector = new Vector2(nodesList[j].gridX, nodesList[j].gridY);
+
+                if (Vector2.Distance(iVector, jVector) <= 1.0f)
+                {
+                    ConnectNodes(nodesList[i], nodesList[j]);
+                    ConnectNodes(nodesList[j], nodesList[i]);
+                }
+            }
+        }
+    }
+    private void ConnectNodes(Node from, Node to)
+    {   
+        if (from == to) { return; }
+        from.connections.Add(to);
     }
     private void CreateDungeonDoors()
     {
@@ -253,7 +301,24 @@ public class DungeonGenerator : MonoBehaviour
     {
         while (enemyCount < maxEnemyCount)
         {
-            CreateObject(enemy);
+            //Vector3Int objectPosition = Utils.GetAndRemoveRandomInList(floorTileList);
+            //Vector3 objectWorldPosition = GetWorldPosition(objectPosition);
+
+            Node newNode = Utils.GetRandomInList(nodesList);
+            Vector3Int objectPosition = new Vector3Int((int)newNode.gridX, (int)newNode.gridY, 0);
+            Vector3 objectWorldPosition = GetWorldPosition(objectPosition);
+
+            Enemy newEnemy = Instantiate(enemy, objectWorldPosition, Quaternion.identity);
+
+            NPC_Controller newController = newEnemy.GetComponent<NPC_Controller>();
+
+            newController.currentNode = newNode;
+
+
+
+ 
+            //NPC_Controller newEnemy = 
+            //CreateObject(enemy);
             enemyCount++;
         }
     }

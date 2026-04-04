@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6033619332663580238}
   - component: {fileID: 8063439096516344803}
   - component: {fileID: 8555882107373728066}
+  - component: {fileID: 7669882272141599958}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
@@ -194,6 +195,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthBar
   slider: {fileID: 4853609705912670574}
+--- !u!114 &7669882272141599958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6394926080208838952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1864bc043ab00047aaca214763129f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPC_Controller
+  maxHealth: 100
+  curHealth: 0
+  panicMultiplier: 1
+  currentState: 0
+  player: {fileID: 8135832942008966325, guid: 7684f70dca05c644f96969e102a367c3, type: 3}
+  speed: 3
 --- !u!1001 &5845080569693808163
 PrefabInstance:
   m_ObjectHideFlags: 0
