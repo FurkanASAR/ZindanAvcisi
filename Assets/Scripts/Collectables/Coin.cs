@@ -3,6 +3,7 @@ using System;
 
 public class Coin : MonoBehaviour, ICollectable
 {
+    public ItemSO GetItem => throw new NotImplementedException();
 
     private void Start()
     {
@@ -19,5 +20,10 @@ public class Coin : MonoBehaviour, ICollectable
     private void RegisterObject()
     {
         CollectableManager.Instance.RegisterEvent(this);
+    }
+
+    public void GetRunTimeItem(ItemSO itemSo)
+    {
+        throw new NotImplementedException();
     }
 }

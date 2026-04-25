@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IDamageable, IHasHealth
+public class Player : MonoBehaviour, IDamageable, IHasHealth, IHasInventory
 {
     public event Action OnHealthChange;
     public HealthSystem CharacterHealth => playerHealth;
@@ -32,8 +32,9 @@ public class Player : MonoBehaviour, IDamageable, IHasHealth
     {
         playerState = PlayerState.Idle;
         attackTimer = attackRate;
-        playerHealth = new HealthSystem(playerMaxHealth);
-        Debug.Log(playerHealth.GetHealth());
+        playerHealth = new HealthSystem(playerMaxHealth);        
+
+        playerInventory = new InventorySystem();
     }
     private void Start()
     {
@@ -143,19 +144,16 @@ public class Player : MonoBehaviour, IDamageable, IHasHealth
                 break;
         }
     }
-
     public void TakeDamage(float damage)
     {
         playerHealth.TakeDamage(damage);
         OnHealthChange?.Invoke();
         Debug.Log(playerHealth.GetHealth());
     }
-
     public void Heal(float heal)
     {
         playerHealth.Heal(heal);
-        OnHealthChange?.Invoke();
-        Debug.Log(playerHealth.GetHealth());
+        OnHealthChange?.Invoke();        
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -169,4 +167,11 @@ public class Player : MonoBehaviour, IDamageable, IHasHealth
     {
         Gizmos.DrawSphere(attackPoint.position, attackPointRadius);
     }
+
+    #region Inventory
+    private InventorySystem playerInventory;
+
+    public InventorySystem Inventory => playerInventory;
+
+    #endregion
 }

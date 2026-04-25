@@ -18,8 +18,6 @@ public class HealthBar : MonoBehaviour
 
     private void Heatlh_OnHealthChanged(object sender, System.EventArgs e)
     {
-        slider.value = heatlh.GetHealth();
-        Debug.Log("HelathBar slider valie " + slider.value);
-        Debug.Log("HealthBar healt.GetHealth " + heatlh.GetHealth());
+        slider.value = heatlh.GetHealth();        
     }
 }

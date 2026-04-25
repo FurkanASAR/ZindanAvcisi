@@ -3,6 +3,7 @@ using UnityEngine;
 
 public interface IDamageable
 {
+    public HealthSystem CharacterHealth{ get;}
     Faction Faction { get; }
 
     public event Action OnHealthChange;

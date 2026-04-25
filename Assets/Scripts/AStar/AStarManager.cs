@@ -34,15 +34,8 @@ public class AStarManager : MonoBehaviour
             node.gCost = float.MaxValue;
         }
 
-        Debug.Log("first debug!");
-
-        Debug.Log("start.gridx " + start.gridX);
-        Debug.Log("start.gridy " + start.gridY);
-
         Vector2 startVector = new Vector2(start.gridX, start.gridY);
         Vector2 endVector = new Vector2(end.gridX, end.gridY);
-
-        Debug.Log("Second debug");
 
         start.gCost = 0f;
         start.hCost = Vector2.Distance(startVector, endVector);
