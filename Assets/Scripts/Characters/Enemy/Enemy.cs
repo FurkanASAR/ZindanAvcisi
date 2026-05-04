@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour, IDamageable, IHasHealth
 
     private void Awake()
     {
-        enemyHealth = new HealthSystem(maxHealth);
+        enemyHealth = new HealthSystem(gameObject, maxHealth);
     }
     public void Heal(float heal)
     {

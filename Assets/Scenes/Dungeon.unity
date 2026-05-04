@@ -156,7 +156,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 633170076}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -510,6 +510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c21a5212db679409cc7f659c098836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapGenerator
+  npc: {fileID: 0}
   brokenDoor: {fileID: 2661192771400120223, guid: c4fd5710ec01a3646b8f629efc80f632, type: 3}
   dungeonDoor: {fileID: 854051549447422443, guid: fb1701bd05617d64690759d7490d342c, type: 3}
   enemy: {fileID: 4657752523550977138, guid: fb5315e1980dc0d4d8a47f678ba181cc, type: 3}
@@ -518,12 +519,12 @@ MonoBehaviour:
   wallTile: {fileID: 11400000, guid: fd03ddf92c214cb46844521e45756e20, type: 2}
   floorTileMap: {fileID: 2045135387}
   wallTileMap: {fileID: 1356568941}
-  mapSize: {x: 70, y: 70}
+  mapSize: {x: 20, y: 20}
   maxAgent: 10
   minAgnet: 1
   gridFillPercentage: 0.2
-  maxEnemyCount: 20
-  maxOreCount: 25
+  maxEnemyCount: 4
+  maxOreCount: 10
 --- !u!1 &2045135384
 GameObject:
   m_ObjectHideFlags: 0
@@ -771,5 +772,5 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1595220053}
-  - {fileID: 633170078}
   - {fileID: 1026244561}
+  - {fileID: 633170078}

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IDamageable, IHasHealth, IHasInventory
 {
+    public static Player Instance { get; private set; }
+
     public event Action OnHealthChange;
     public HealthSystem CharacterHealth => playerHealth;
     public Faction Faction => faction;
@@ -30,11 +32,20 @@ public class Player : MonoBehaviour, IDamageable, IHasHealth, IHasInventory
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         playerState = PlayerState.Idle;
         attackTimer = attackRate;
-        playerHealth = new HealthSystem(playerMaxHealth);        
+        playerHealth = new HealthSystem(gameObject,playerMaxHealth);        
 
         playerInventory = new InventorySystem();
+
+        Debug.Log(playerHealth.GetHealth());
     }
     private void Start()
     {

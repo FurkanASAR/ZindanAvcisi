@@ -1,10 +1,11 @@
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CollectableManager : MonoBehaviour
 {
     [SerializeField] private Coin coin;
-    [SerializeField] private Player player;
+    //[SerializeField] private Player player;
     public static CollectableManager Instance {  get; private set; }
 
 
@@ -22,9 +23,24 @@ public class CollectableManager : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        playerinventory = FindObjectOfType<Player>().Inventory;
+    }
+
     private void Start()
     {
-        playerinventory = player.Inventory;
+        //playerinventory = player.Inventory;
     }
 
     public void RegisterEvent(ICollectable collectable)
@@ -33,7 +49,10 @@ public class CollectableManager : MonoBehaviour
         {            
             switch (collectable.GetItem)
             {
+                
                 case ItemSO item when item.itemType == ItemSO.ItemType.GoToInventory:
+                    Debug.Log("CollectableManager: Item" + collectable.GetItem);
+                    Debug.Log("CollectableManager: playerInventory" + playerinventory);
                     playerinventory.AddItem(collectable.GetItem);
                     break;
 

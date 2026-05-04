@@ -39,12 +39,6 @@ public class NPC_Controller : MonoBehaviour
             case StateMachine.Patrol:
                 Patrol();
                 break;
-            /*case StateMachine.Engage:
-                ..Engage();
-                break;
-            case StateMachine.Evade:
-                Evade();
-                break;*/
         }
 
         bool playerSeen = Vector2.Distance(transform.position, player.transform.position) < 5.0f;
@@ -72,28 +66,10 @@ public class NPC_Controller : MonoBehaviour
     void Patrol()
     {
         if (path.Count == 0)
-        {
-            Debug.Log(currentNode);            
+        {                    
             path = AStarManager.instance.GeneratePath(currentNode, AStarManager.instance.nodesList[Random.Range(0, AStarManager.instance.nodesList.Count)]);
         }
     }
-
-   /* void Engage()
-    {
-        if (path.Count == 0)
-        {
-            path = AStarManager.instance.GeneratePath(currentNode, AStarManager.instance.FindNearestNode(player.transform.position));
-        }
-    }
-
-    void Evade()
-    {
-        if (path.Count == 0)
-        {
-            path = AStarManager.instance.GeneratePath(currentNode, AStarManager.instance.FindFurthestNode(player.transform.position));
-        }
-    }*/
-
     public void CreatePath()
     {
         if (path.Count > 0)

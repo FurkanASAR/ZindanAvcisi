@@ -9,6 +9,7 @@ using UnityEngine.Tilemaps;
 public class DungeonGenerator : MonoBehaviour
 {
 
+
     public NPC_Controller npc;
     public enum MapGrid
     {
@@ -226,7 +227,6 @@ public class DungeonGenerator : MonoBehaviour
 
             Node node = new Node{ gridX = nodeWorldPosition.x, gridY = nodeWorldPosition.y };
             nodesList.Add(node);
-            Debug.Log(i +". node position: X " + node.gridX + " Y: " + node.gridY);
         }
         CreateConnections();
     }
@@ -257,11 +257,23 @@ public class DungeonGenerator : MonoBehaviour
         Vector3Int brokenDoorPosition = Utils.GetAndRemoveRandomInList(wallTileList);
         Vector3Int dungeonDoorPosition = Utils.GetAndRemoveRandomInList(wallTileList);
 
+        mapGrid[brokenDoorPosition.x, brokenDoorPosition.y] = MapGrid.Empty;
+        mapGrid[dungeonDoorPosition.x, dungeonDoorPosition.y] = MapGrid.Empty;
+
+        wallTileMap.SetTile(brokenDoorPosition, null);
+        wallTileMap.SetTile(dungeonDoorPosition, null);
+
         Vector3 brokenDoorWorldPosition = GetWorldPosition(brokenDoorPosition);
         Vector3 dungeonDoorWorldPosition = GetWorldPosition(dungeonDoorPosition);
 
         Instantiate(brokenDoor, brokenDoorWorldPosition, Quaternion.identity);
         Instantiate(dungeonDoor, dungeonDoorWorldPosition, Quaternion.identity);
+
+        var tilemapCollider = wallTileMap.GetComponent<TilemapCollider2D>();
+        var composite = wallTileMap.GetComponent<CompositeCollider2D>();
+        wallTileMap.GetComponent<Rigidbody2D>().WakeUp();
+
+        tilemapCollider.ProcessTilemapChanges();
 
         SetPlayerSpawn(Vector3Int.FloorToInt(brokenDoorWorldPosition));
         CreateEnemies();

@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Heart
   itemData: {fileID: 11400000, guid: eb7d5a4c5ec44b9409c334bc17cd6969, type: 2}
+  player: {fileID: 8135832942008966325, guid: 7684f70dca05c644f96969e102a367c3, type: 3}
 --- !u!1 &7542169725826889006
 GameObject:
   m_ObjectHideFlags: 0

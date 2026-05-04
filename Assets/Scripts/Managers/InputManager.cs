@@ -12,14 +12,13 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
+        if (Instance != null && Instance != this)
         {
-            GameObject.Destroy(this);
+            Destroy(gameObject);
+            return;
         }
-        else
-        {
-            Instance = this;
-        }
+        Instance = this;
+
         inputMaster = new InputMaster();
         inputMaster.Player.Attack.started += ctx => AttackButtonPressed();
         inputMaster.Enable();

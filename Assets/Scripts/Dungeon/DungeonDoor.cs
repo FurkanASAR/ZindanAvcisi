@@ -10,7 +10,9 @@ public class DungeonDoor : MonoBehaviour, ICollectable
 
     public void Collect()
     {
-        SceneManager.LoadScene("Dungeon");
+        SceneFader.Instance.FadeToScene("Dungeon");        
+        OnCollected?.Invoke(this, EventArgs.Empty);
+        
     }
 
     public void GetRunTimeItem(ItemSO itemSo)

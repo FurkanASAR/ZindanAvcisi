@@ -28,8 +28,9 @@ public static class Utils
             }
         }
         int listIndex = UnityEngine.Random.Range(0, list.Count);
+        T item = list[listIndex];
         list.RemoveAt(listIndex);
 
-        return list[listIndex];
+        return item;
     }
 }
