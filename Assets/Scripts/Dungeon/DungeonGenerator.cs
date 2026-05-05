@@ -275,13 +275,15 @@ public class DungeonGenerator : MonoBehaviour
 
         tilemapCollider.ProcessTilemapChanges();
 
-        SetPlayerSpawn(Vector3Int.FloorToInt(brokenDoorWorldPosition));
+        SetPlayerSpawn();               //Vector3Int.FloorToInt(brokenDoorWorldPosition
         CreateEnemies();
         CreateOres();
     }
-    private void SetPlayerSpawn(Vector3Int brokenDoorWorldPosition)
+    private void SetPlayerSpawn()       //Vector3Int brokenDoorWorldPosition
     {
-        if (mapGrid[brokenDoorWorldPosition.x + 1, brokenDoorWorldPosition.y] == MapGrid.Floor)
+
+
+        /*if (mapGrid[brokenDoorWorldPosition.x + 1, brokenDoorWorldPosition.y] == MapGrid.Floor)
         {         
             Vector3Int pos = new Vector3Int(brokenDoorWorldPosition.x + 1, brokenDoorWorldPosition.y);            
             this.playerWorldPosition = GetWorldPosition(pos);
@@ -306,7 +308,12 @@ public class DungeonGenerator : MonoBehaviour
         else
         {
             Debug.Log("Dungeon Generator PlayeSpawn: Else executed!");
-        }
+        }*/
+
+        Vector3Int pos = new Vector3Int(Utils.GetAndRemoveRandomInList(floorTileList).x, Utils.GetAndRemoveRandomInList(floorTileList).y, 0);
+        this.playerWorldPosition = GetWorldPosition(pos);
+
+
         OnBrokenDoorGenerated?.Invoke(this, EventArgs.Empty);
     }
     private void CreateEnemies()
