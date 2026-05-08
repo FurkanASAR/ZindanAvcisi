@@ -16,3 +16,4 @@ MonoBehaviour:
   <Type>k__BackingField: 3
   <itemName>k__BackingField: Coin
   <itemSprite>k__BackingField: {fileID: -3338749442709606003, guid: 9fddb256ba3351441a56433a23e25a94, type: 3}
+  <itemValue>k__BackingField: 10

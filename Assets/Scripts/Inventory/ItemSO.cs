@@ -17,4 +17,5 @@ public class ItemSO : ScriptableObject
     [field: SerializeField] public ItemType Type { get; private set; }
     [field: SerializeField] public string itemName { get; private set; } 
     [field: SerializeField] public Sprite itemSprite { get; private set; }
+    [field: SerializeField] public int itemValue { get; private set; }
 }

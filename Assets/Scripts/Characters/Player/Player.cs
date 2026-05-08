@@ -63,6 +63,8 @@ public class Player : MonoBehaviour, IDamageable, IHasHealth, IHasInventory
     {
         //HandleInput gelen input'a gore state degisir
         HandleInput();
+
+        
     }
     private void FixedUpdate()
     {
@@ -102,7 +104,7 @@ public class Player : MonoBehaviour, IDamageable, IHasHealth, IHasInventory
         foreach(Collider2D enemy in hitEnemies)
         {
             IDamageable damageable = enemy.GetComponent<IDamageable>();
-            if(damageable != null && damageable.Faction == Faction.Enemy)
+            if(damageable != null && damageable.Faction != Faction.Player)
             {
                 damageable.TakeDamage(damage);
             }

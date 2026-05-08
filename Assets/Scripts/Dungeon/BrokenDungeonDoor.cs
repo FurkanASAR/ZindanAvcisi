@@ -24,7 +24,8 @@ public class BrokenDungeonDoor : MonoBehaviour, ICollectable
         if(collision.CompareTag("Player"))
         {
             player = collision.GetComponent<Player>();
-            player.transform.position = Vector3.zero;            
+            player.transform.position = Vector3.zero;
+            ScoreScript.instance.UpdateScore();
         }
     }
 }

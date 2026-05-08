@@ -310,7 +310,8 @@ public class DungeonGenerator : MonoBehaviour
             Debug.Log("Dungeon Generator PlayeSpawn: Else executed!");
         }*/
 
-        Vector3Int pos = new Vector3Int(Utils.GetAndRemoveRandomInList(floorTileList).x, Utils.GetAndRemoveRandomInList(floorTileList).y, 0);
+        Vector3 playerPos = Utils.GetAndRemoveRandomInList(floorTileList);
+        Vector3Int pos = new Vector3Int((int)playerPos.x, (int)playerPos.y, 0);
         this.playerWorldPosition = GetWorldPosition(pos);
 
 

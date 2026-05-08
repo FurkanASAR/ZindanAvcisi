@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 6966679954839782645}
   - component: {fileID: 1674737442968779192}
   - component: {fileID: 6412549940679752500}
-  - component: {fileID: 6848172147872011497}
   - component: {fileID: 4416252137701659629}
   m_Layer: 0
   m_Name: Inventory_UI
@@ -184,18 +183,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &6848172147872011497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8637197538213661665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc7b12affd69f72458bca1331d5144d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DontDestroyOnLoad
 --- !u!114 &4416252137701659629
 MonoBehaviour:
   m_ObjectHideFlags: 0

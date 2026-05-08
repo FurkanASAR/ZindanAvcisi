@@ -11,7 +11,7 @@ public class InventorySystem
 
 
     private List<Item> itemList;
-
+    private int totalValue = 0;
     public InventorySystem()
     {
         itemList = new List<Item>();                
@@ -35,4 +35,14 @@ public class InventorySystem
 
         OnItemPickedUp?.Invoke(this, EventArgs.Empty);
     }
+
+    public int CalculateTotalValue()
+    {        
+        foreach (Item item in itemList)
+        {
+            totalValue += item.itemData.itemValue;
+        }
+        return totalValue;
+    }
+
 }
