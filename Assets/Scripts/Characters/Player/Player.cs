@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IDamageable, IHasHealth, IHasInventory
 {
@@ -46,7 +47,17 @@ public class Player : MonoBehaviour, IDamageable, IHasHealth, IHasInventory
         playerInventory = new InventorySystem();
 
         Debug.Log(playerHealth.GetHealth());
+        playerHealth.OnDeath += PlayerHealth_OnDeath;
     }
+
+    private void PlayerHealth_OnDeath(object sender, EventArgs e)
+    {
+        SceneManager.LoadScene("GameOver");
+        gameObject.SetActive(true);
+        transform.position = Vector3.zero;
+        CharacterHealth.ResetHealth();
+    }
+
     private void Start()
     {
         InputManager.Instance.OnAttackButtonPressed += HandleAttackEvent;

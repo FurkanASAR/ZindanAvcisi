@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class OreScript : MonoBehaviour, IDamageable, IHasHealth
 {
+    public GameObject coinPrefab;
     public HealthSystem CharacterHealth => oreHealth;
     public event Action OnHealthChange;
     public Faction Faction => faction;
@@ -14,6 +15,12 @@ public class OreScript : MonoBehaviour, IDamageable, IHasHealth
     private void Awake()
     {
         oreHealth = new HealthSystem(gameObject, maxHealth);
+        oreHealth.OnDeath += OreHealth_OnDeath;
+    }
+
+    private void OreHealth_OnDeath(object sender, EventArgs e)
+    {
+       Instantiate(coinPrefab, transform.position, Quaternion.identity);
     }
     public void Heal(float heal)
     {

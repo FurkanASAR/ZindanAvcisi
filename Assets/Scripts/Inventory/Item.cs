@@ -30,5 +30,6 @@ public class Item : MonoBehaviour, ICollectable
     public virtual void Collect()
     {
         OnCollected?.Invoke(this, EventArgs.Empty);
+        gameObject.SetActive(false);
     }
 }

@@ -108,6 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62ca649246576b54db470375af7ba762, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OreScript
+  coinPrefab: {fileID: 3615272277459904640, guid: bfaadcc2739316a459d71c2eae97405e, type: 3}
 --- !u!114 &6694043314712300694
 MonoBehaviour:
   m_ObjectHideFlags: 0

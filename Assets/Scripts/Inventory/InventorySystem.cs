@@ -45,4 +45,9 @@ public class InventorySystem
         return totalValue;
     }
 
+    public void ClearInventory()
+    {
+        itemList.Clear();
+        OnItemPickedUp?.Invoke(this, EventArgs.Empty);
+    }
 }

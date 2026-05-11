@@ -49,4 +49,9 @@ public class HealthSystem
     {
         owner.SetActive(false);
     }
+
+    public void ResetHealth()
+    {
+        health = maxHealth;
+    }
 }
