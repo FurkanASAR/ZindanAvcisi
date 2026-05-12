@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class ScoreScript : MonoBehaviour
 {
@@ -22,6 +23,12 @@ public class ScoreScript : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        LoadScore();
+        UpdateScore();
+    }
+
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -40,5 +47,17 @@ public class ScoreScript : MonoBehaviour
     public void UpdateScore()
     {
         scoreText.text = " " + player.Inventory.CalculateTotalValue();
+    }
+
+    public void SaveScore()
+    {
+        PlayerPrefs.SetInt("Score", player.Inventory.totalValue);
+        PlayerPrefs.Save();
+    }
+
+
+    public void LoadScore()
+    {
+        player.Inventory.totalValue= PlayerPrefs.GetInt("Score", 0);
     }
 }

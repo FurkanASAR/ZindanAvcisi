@@ -12,7 +12,7 @@ public class InventorySystem
 
 
     private List<Item> itemList;
-    private int totalValue = 0;
+    public int totalValue = 0;
     private const int MAX_INVENTROY_SIZE = 5;
     private int currentInventroySize = 0;
     public InventorySystem()

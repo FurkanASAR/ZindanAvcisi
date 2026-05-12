@@ -107,7 +107,7 @@ public class Player : MonoBehaviour, IDamageable, IHasHealth, IHasInventory
             playerState = PlayerState.Attacking;            
         }
     }
-    private void Attack()
+    public void Attack()
     {
         isAttacking = true;
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackPointRadius);
@@ -190,6 +190,12 @@ public class Player : MonoBehaviour, IDamageable, IHasHealth, IHasInventory
     {
         Gizmos.DrawSphere(attackPoint.position, attackPointRadius);
     }
+
+    public void PrintLocation()
+    {
+        Debug.Log($"Player Location: {transform.position}");
+    }
+
 
     #region Inventory
     private InventorySystem playerInventory;
