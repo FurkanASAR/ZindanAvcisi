@@ -8,10 +8,13 @@ using UnityEngine.EventSystems;
 public class InventorySystem
 {
     public event EventHandler OnItemPickedUp;
+    public event EventHandler OnClearInventory;
 
 
     private List<Item> itemList;
     private int totalValue = 0;
+    private const int MAX_INVENTROY_SIZE = 5;
+    private int currentInventroySize = 0;
     public InventorySystem()
     {
         itemList = new List<Item>();                
@@ -21,19 +24,18 @@ public class InventorySystem
 
     public void AddItem(ItemSO item)
     {
-        Item newItem = new Item { itemData = item };
-        Debug.Log($"Adding item: {newItem.itemData.itemName} to inventory");
-        itemList.Add(newItem);
-        Debug.Log("Item picked up event fired");
+        if (currentInventroySize < MAX_INVENTROY_SIZE)
+        {
+            Item newItem = new Item { itemData = item };
+            itemList.Add(newItem);
+            currentInventroySize++;
 
-        foreach (Item itemm in itemList)
-        { 
-        Debug.Log(itemm.itemData.itemName);
-
+            OnItemPickedUp?.Invoke(this, EventArgs.Empty);
         }
-
-
-        OnItemPickedUp?.Invoke(this, EventArgs.Empty);
+        else
+        {
+            Debug.Log("Inventory is full. Cannot add more items.");
+        }
     }
 
     public int CalculateTotalValue()
@@ -48,6 +50,7 @@ public class InventorySystem
     public void ClearInventory()
     {
         itemList.Clear();
-        OnItemPickedUp?.Invoke(this, EventArgs.Empty);
+        currentInventroySize = 0;
+        OnClearInventory?.Invoke(this, EventArgs.Empty);
     }
 }

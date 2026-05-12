@@ -7,13 +7,17 @@ public class InventorySlot : MonoBehaviour
 
     private ItemSO item;
     public void AddItem(ItemSO item)
-    {
-        Debug.Log("InventorySlot: Adding item executed " + item.itemName);  
+    {        
         this.item = item;
         this.image.sprite = this.item.itemSprite;
         image.enabled = true;
     }
 
-
+    public void RemoveItem() 
+    {
+        this.item = null;
+        this.image.sprite = null;
+        image.enabled = false;
+    }
 
 }

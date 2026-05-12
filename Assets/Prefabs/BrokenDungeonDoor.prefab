@@ -84,8 +84,8 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.3773585, g: 0.040939845, b: 0.040939845, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 9d8123c64ac9884468bf288a4a0eeda2, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -179,4 +179,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8a40006e53237e47a95b2fbc6dd4eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrokenDungeonDoor
-  player: {fileID: 8135832942008966325, guid: 7684f70dca05c644f96969e102a367c3, type: 3}

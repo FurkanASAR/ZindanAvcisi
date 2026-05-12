@@ -50,13 +50,10 @@ public class CollectableManager : MonoBehaviour
             {
                 
                 case ItemSO item when item.itemType == ItemSO.ItemType.GoToInventory:
-                    Debug.Log("CollectableManager: Item" + collectable.GetItem);
-                    Debug.Log("CollectableManager: playerInventory" + playerinventory);
                     playerinventory.AddItem(collectable.GetItem);
                     break;
 
-                case ItemSO item when item.itemType == ItemSO.ItemType.Heart:
-                     Debug.Log("CollectableManager: Heart collected!");
+                case ItemSO item when item.itemType == ItemSO.ItemType.Heart:                     
                     break;
                     
 

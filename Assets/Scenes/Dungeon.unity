@@ -807,7 +807,7 @@ MonoBehaviour:
   minAgnet: 1
   gridFillPercentage: 0.2
   maxEnemyCount: 4
-  maxOreCount: 10
+  maxOreCount: 6
 --- !u!1 &2045135384
 GameObject:
   m_ObjectHideFlags: 0

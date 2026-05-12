@@ -45,8 +45,7 @@ public class Player : MonoBehaviour, IDamageable, IHasHealth, IHasInventory
         playerHealth = new HealthSystem(gameObject,playerMaxHealth);        
 
         playerInventory = new InventorySystem();
-
-        Debug.Log(playerHealth.GetHealth());
+        
         playerHealth.OnDeath += PlayerHealth_OnDeath;
     }
 
