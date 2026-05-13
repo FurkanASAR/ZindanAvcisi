@@ -21,7 +21,7 @@ public class Player : MonoBehaviour, IDamageable, IHasHealth, IHasInventory
     private float playerMaxHealth = 100f;
     private Vector2 inputVector = new Vector2();
     private float attackTimer;
-    private bool isAttacking = false;
+    public bool isAttacking = false;
     private float damage = 10f;
     private Faction faction = Faction.Player;
     private enum PlayerState
